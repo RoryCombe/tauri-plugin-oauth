@@ -194,10 +194,10 @@ pub fn cancel(port: u16) -> Result<(), std::io::Error> {
 }
 
 mod plugin_impl {
-    use tauri::{Manager, Runtime, Window};
+    use tauri::{Manager, Runtime, Window, Emitter};
 
     #[tauri::command]
-    pub(crate) fn start<R: Runtime>(
+    pub(crate) async fn start<R: Runtime>(
         window: Window<R>,
         config: Option<super::OauthConfig>,
     ) -> Result<u16, String> {
@@ -227,7 +227,7 @@ mod plugin_impl {
     }
 
     #[tauri::command]
-    pub(crate) fn cancel(port: u16) -> Result<(), String> {
+    pub(crate) async fn cancel(port: u16) -> Result<(), String> {
         crate::cancel(port).map_err(|err| err.to_string())
     }
 }
